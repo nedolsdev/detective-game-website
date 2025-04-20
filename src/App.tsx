@@ -1,26 +1,52 @@
+import { useState } from 'react'
 import './App.css'
 import BarcodeGenerator from './BarcodeGenerator'
 import BarcodeScanner from './BarcodeScanner'
 import QRCodeGenerator from './QRCodeGenerator'
 import QRCodeScanner from './QRCodeScanner'
 
+type Mode = 'file' | 'camera'
+type Type = 'qr' | 'barcode'
+
 function App() {
+  const [mode, setMode] = useState<Mode>('file')
+  const [type, setType] = useState<Type>('qr')
+
+  const toggleMode = () => {
+    setMode(prev => (prev === 'file' ? 'camera' : 'file'))
+  }
+
+  const toggleType = () => {
+    setType(prev => (prev === 'qr' ? 'barcode' : 'qr'))
+  }
 
   return (
-    <>
-      <div>
-        <p>Hello World!</p>
+    <div>
+      <p>Hello World!</p>
 
-        <QRCodeScanner mode="file" />
+      <button onClick={toggleMode}>
+        Switch to {mode === 'file' ? 'Camera' : 'File'} Mode
+      </button>
 
-        <QRCodeGenerator />
+      <button onClick={toggleType} style={{ marginLeft: '10px' }}>
+        Switch to {type === 'qr' ? 'Barcode' : 'QR'} View
+      </button>
 
-        <BarcodeScanner mode="file" />
+      <p>Current Mode: {mode}</p>
+      <p>Current Type: {type}</p>
 
-        <BarcodeGenerator />
-
-      </div>
-    </>
+      {type === 'qr' ? (
+        <>
+          <QRCodeScanner mode={mode} />
+          <QRCodeGenerator />
+        </>
+      ) : (
+        <>
+          <BarcodeScanner mode={mode} />
+          <BarcodeGenerator />
+        </>
+      )}
+    </div>
   )
 }
 
