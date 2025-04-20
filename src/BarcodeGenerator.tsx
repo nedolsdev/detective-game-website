@@ -25,13 +25,11 @@ function BarcodeGenerator() {
     const url = URL.createObjectURL(svgBlob);
 
     img.onload = () => {
-      // Set canvas size with padding
       canvas.width = img.width + padding * 2;
       canvas.height = img.height + padding * 2;
-      ctx.fillStyle = '#fff'; // Background color (white)
-      ctx.fillRect(0, 0, canvas.width, canvas.height); // Fill the canvas with background
+      ctx.fillStyle = '#fff'; 
+      ctx.fillRect(0, 0, canvas.width, canvas.height); 
 
-      // Draw the image with padding
       ctx?.drawImage(img, padding, padding);
 
       URL.revokeObjectURL(url);
