@@ -14,39 +14,41 @@ function QRCodeScanner({ mode }: QRCodeScannerProps) {
   useEffect(() => {
     if (mode !== 'camera' || !scannerRef.current || qrInstance) return;
 
-    const timeout = setTimeout(() => {
-      const html5QrCode = new Html5Qrcode('qr-reader');
+    const startScanner = () => {
+      // Check if the DOM element exists before initializing
+      if (!scannerRef.current) {
+        console.error('Scanner element not found.');
+        return;
+      }
+
+      const html5QrCode = new Html5Qrcode(scannerRef.current.id);
       setQrInstance(html5QrCode);
 
       html5QrCode
         .start(
-          { facingMode: 'environment' },
-          {
-            fps: 10,
-            qrbox: { width: 250, height: 250 },
-          },
+          { facingMode: 'environment' }, 
+          { fps: 10, qrbox: { width: 1000, height: 1000 } },
           (decodedText: string) => {
             alert(`Scanned QR Code: ${decodedText}`);
-            html5QrCode.stop().then(() => {
-              console.log('Camera stopped');
-            });
+            html5QrCode.stop().then(() => console.log('Camera stopped'));
           },
           (error) => {
             console.log('QR code scan error:', error);
           }
         )
         .catch((err) => {
-          console.error('QR code scanner error:', err);
+          console.error('Failed to start camera:', err);
+          alert('Failed to access camera. Please check permissions.');
         });
-    }, 100); // short delay ensures DOM is ready
+    };
+
+    const timeout = setTimeout(startScanner, 100);
 
     return () => {
       clearTimeout(timeout);
-
-        // hack just to type check
-        const potentialQrInstance = qrInstance as unknown as Html5Qrcode;
-
-        potentialQrInstance?.stop();
+      if (qrInstance) {
+        qrInstance.stop().then(() => qrInstance.clear());
+      }
     };
   }, [mode, qrInstance]);
 
@@ -65,7 +67,7 @@ function QRCodeScanner({ mode }: QRCodeScannerProps) {
       });
 
     return () => {
-      html5QrCode.clear()
+      html5QrCode.clear();
     };
   }, [qrFile, mode]);
 
@@ -84,7 +86,7 @@ function QRCodeScanner({ mode }: QRCodeScannerProps) {
         <div
           id="qr-reader"
           ref={scannerRef}
-          style={{ width: '100%', height: '300px' }}
+          style={{ width: '100%', height: '500px' }}
         />
       )}
       {mode === 'file' && (
