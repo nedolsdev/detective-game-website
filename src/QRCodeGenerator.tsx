@@ -1,67 +1,88 @@
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
 import { QRCodeSVG } from 'qrcode.react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+
+const names: string[] = [];
+
+const NUMBER_OF_CLUES = 36;
+const NUMBER_OF_SUSPECTS = 12;
+
+for (let i=1; i <= NUMBER_OF_CLUES; i++) {
+  names.push(`clue-${i}`);
+}
+
+for (let i=1; i <= NUMBER_OF_SUSPECTS; i++) {
+  names.push(`suspect-${i}`);
+}
 
 function QRCodeGenerator() {
-  const [value, setValue] = useState<string>('user-1234');
-  const qrRef = useRef<HTMLDivElement>(null);
+  const qrRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  function handleDownload(): void {
-    const svg = qrRef.current?.querySelector('svg');
-    if (!svg) return;
+  function getQRCodePngData(index: number): Promise<{ name: string; pngDataUrl: string }> {
+    return new Promise((resolve) => {
+      const name = names[index];
+      const svg = qrRefs.current[index]?.querySelector('svg');
+      if (!svg) return resolve({ name, pngDataUrl: '' });
 
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
 
-    if (!ctx) {
-      throw new Error('Failed to get canvas context');
+      if (!ctx) return resolve({ name, pngDataUrl: '' });
+
+      const img = new Image();
+      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        URL.revokeObjectURL(url);
+        const pngDataUrl = canvas.toDataURL('image/png');
+        resolve({ name, pngDataUrl });
+      };
+
+      img.src = url;
+    });
+  }
+
+  async function handleDownloadZip() {
+    const zip = new JSZip();
+
+    for (let i = 0; i < names.length; i++) {
+      const { name, pngDataUrl } = await getQRCodePngData(i);
+      if (pngDataUrl) {
+        const base64Data = pngDataUrl.split(',')[1];
+        zip.file(`qrcode-${name}.png`, base64Data, { base64: true });
+      }
     }
 
-    const img = new Image();
-    const padding = 0;
-
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
-
-    img.onload = () => {
-      canvas.width = img.width + padding * 2;
-      canvas.height = img.height + padding * 2;
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, padding, padding);
-      URL.revokeObjectURL(url);
-
-      const pngUrl = canvas.toDataURL('image/png');
-      const a = document.createElement('a');
-      a.href = pngUrl;
-      a.download = `qrcode-${value}.png`;
-      a.click();
-    };
-
-    img.src = url;
+    const blob = await zip.generateAsync({ type: 'blob' });
+    saveAs(blob, 'qr-codes.zip');
   }
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Generate QR Code</h2>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Enter value"
-        style={{ padding: '8px', fontSize: '16px', marginBottom: '10px', width: '100%' }}
-      />
+      <h2>Generate QR Codes</h2>
+      <button onClick={handleDownloadZip} style={{ marginBottom: '20px' }}>
+        Download All as ZIP
+      </button>
 
-      {value && (
-        <>
-          <div ref={qrRef} style={{ padding: '20px' }}>
-            <QRCodeSVG value={value} size={256} includeMargin={true} />
+      {names.map((name, index) => (
+        <div key={name} style={{ marginBottom: '40px' }}>
+          <div
+            ref={(el) => (qrRefs.current[index] = el)}
+            style={{ padding: '20px', border: '1px solid #ccc', display: 'inline-block' }}
+          >
+            <QRCodeSVG value={name} size={256} includeMargin={true} />
           </div>
-          <button onClick={handleDownload} style={{ marginTop: '10px' }}>
-            Download qrcode-{value}.png
-          </button>
-        </>
-      )}
+          <div style={{ textAlign: 'center', marginTop: '10px' }}>{name}</div>
+        </div>
+      ))}
     </div>
   );
 }
