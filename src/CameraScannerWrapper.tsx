@@ -23,35 +23,37 @@ function CameraScannerWrapper({ onScanComplete }: CameraScannerWrapperProps) {
         textAlign: 'center',
       }}
     >
-      <div
-        style={{
-          height: '300px',
-          border: '2px solid #ccc',
-          borderRadius: '8px',
-          marginBottom: '1rem',
-          overflow: 'hidden',
-          backgroundColor: '#f8f9fa',
-        }}
-      >
-        {isScanning ? (
-          <div style={{ width: '100%', height: '100%' }}>
-            <QRCodeScanner mode="camera" onScanComplete={completed_scan} />
-          </div>
-        ) : (
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#aaa',
-            }}
-          >
-            Camera preview will appear here
-          </div>
-        )}
-      </div>
+      {isScanning && (
+        <div
+          style={{
+            height: '300px',
+            border: '2px solid #ccc',
+            borderRadius: '8px',
+            marginBottom: '1rem',
+            overflow: 'hidden',
+            backgroundColor: '#f8f9fa',
+          }}
+        >
+          {isScanning ? (
+            <div style={{ width: '100%', height: '100%' }}>
+              <QRCodeScanner mode="camera" onScanComplete={completed_scan} />
+            </div>
+          ) : (
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#aaa',
+              }}
+            >
+              Camera preview will appear here
+            </div>
+          )}
+        </div>
+      )}
 
       {!isScanning ? (
         <button

@@ -11,15 +11,19 @@ function App() {
   
   return (
     <Game title="Scan Your Code">
+
+      <CameraScannerWrapper onScanComplete={(code) => alert(code)} />
+
       <Carousel>
         <Card clue={GAME_DATA.clues[0]}>
         </Card> 
         <Card clue={GAME_DATA.clues[1]}>
         </Card>
-        <Card clue={GAME_DATA.clues[2]}>
+        <Card clue={GAME_DATA.clues[25]}>
         </Card>  
       </Carousel>
-      <CameraScannerWrapper onScanComplete={(code) => alert(code)} />
+
+
     </Game>
   )
 }
