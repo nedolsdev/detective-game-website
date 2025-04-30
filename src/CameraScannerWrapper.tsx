@@ -3,9 +3,10 @@ import QRCodeScanner from "./QRCodeScanner";
 
 type CameraScannerWrapperProps = {
   onScanComplete: (result: string) => void;
+  scanText?: string;
 };
 
-function CameraScannerWrapper({ onScanComplete }: CameraScannerWrapperProps) {
+function CameraScannerWrapper({ onScanComplete, scanText }: CameraScannerWrapperProps) {
   const [isScanning, setIsScanning] = useState(false);
 
   const completed_scan = (result: string) => {
@@ -36,7 +37,7 @@ function CameraScannerWrapper({ onScanComplete }: CameraScannerWrapperProps) {
             cursor: 'pointer',
           }}
         >
-          Start Scanning
+          {scanText || 'Start Scanning'}
         </button>
       ) : (
         <button

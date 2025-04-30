@@ -1,5 +1,4 @@
 import React from 'react';
-import { PLAYER_DATA } from './playerData';
 import { Clue } from './types';
 
 type CardProps = {
@@ -10,6 +9,7 @@ type CardProps = {
   height?: string;
   boxShadow?: string;
   clue: Clue;
+  role: int;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -20,18 +20,10 @@ const Card: React.FC<CardProps> = ({
   height = '100%',
   boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.1)',
   clue,
+  role
 }) => {
 
-    // filter clues for the role you have
-
-  let role = PLAYER_DATA.role;
-
-  if (role === null) {
-    // err
-    console.error('Player role is null');
-    role = 1;
-  }
-
+  
   const filteredClue = clue.info.filter((entry) => entry.foundBy.includes(role));
   
   return (
