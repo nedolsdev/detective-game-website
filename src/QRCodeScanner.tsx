@@ -23,8 +23,8 @@ function QRCodeScanner({ mode, onScanComplete }: QRCodeScannerProps) {
 
       html5QrCode
         .start(
-          { facingMode: 'environment' },
-          { fps: 10, qrbox: { width: 250, height: 250 } },
+          { facingMode: { exact: 'environment' } },
+          { fps: 10, qrbox: { width: 1000, height: 1000 } },
           (decodedText: string) => {
             if (onScanComplete) {
               onScanComplete(decodedText);
@@ -33,6 +33,7 @@ function QRCodeScanner({ mode, onScanComplete }: QRCodeScannerProps) {
           },
           (error) => {
             // console.log('QR code scan error:', error);
+            // alert('No QR code detected.');
           }
         )
         .catch((err) => {

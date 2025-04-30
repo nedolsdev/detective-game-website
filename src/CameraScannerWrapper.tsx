@@ -20,14 +20,9 @@ function CameraScannerWrapper({ onScanComplete }: CameraScannerWrapperProps) {
       style={{
         maxWidth: '400px',
         margin: '0 auto',
-        padding: '1rem',
         textAlign: 'center',
       }}
     >
-      <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
-        Scan a QR Code
-      </h2>
-
       <div
         style={{
           height: '300px',

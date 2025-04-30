@@ -1,16 +1,16 @@
 import './App.css'
 import CameraScannerWrapper from './CameraScannerWrapper'
+import Game from './Game'
 
 
-function onScanComplete(result: string) {
-  console.log("sheesh", result)
-}
 
 function App() {
   
 
   return (
-      <CameraScannerWrapper onScanComplete={onScanComplete} />
+      <Game title="Scan Your Code">
+      <CameraScannerWrapper onScanComplete={(code) => alert(code)} />
+    </Game>
   )
 }
 
