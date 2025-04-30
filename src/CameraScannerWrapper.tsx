@@ -16,6 +16,11 @@ function CameraScannerWrapper({ onScanComplete, scanText }: CameraScannerWrapper
     setIsScanning(false);
   };
 
+  const handleCancel = () => {
+    setIsScanning(false);
+    alert("Due to a bug with the QR code scanner, you need to refresh the page or new scans will not work. Sorry about this.");
+  };
+
   return (
     <div
       style={{
@@ -41,7 +46,7 @@ function CameraScannerWrapper({ onScanComplete, scanText }: CameraScannerWrapper
         </button>
       ) : (
         <button
-          onClick={() => setIsScanning(false)}
+          onClick={handleCancel}
           style={{
             padding: '0.75rem 1.25rem',
             fontSize: '1rem',

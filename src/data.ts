@@ -822,29 +822,29 @@ export const GAME_DATA: GameData = {
   causes: [
     {
       id: 1,
-      cause: "Blunt Force Trauma",
+      cause: "Pill Bottle",
     },
     {
       id: 2,
-      cause: "Sharp Force Trauam",
+      cause: "Unlabelled Bottle",
     },
     {
       id: 3,
-      cause: "Poisoning",
+      cause: "Meat Mallet",
     },
     {
       id: 4,
-      cause: "Burn",
+      cause: "Baseball Bat",
     },
     {
       id: 5,
-      cause: "Aphyxiation",
+      cause: "Broken Glass",
     },
   ],
   crime: {
     killer: 3,
     motive: 1,
-    method: 1,
+    method: 2,
   },
   motives: [
     {
@@ -858,6 +858,10 @@ export const GAME_DATA: GameData = {
     {
       id: 3,
       motive: "Crime of Coincidence",
+    },
+    {
+      id: 4,
+      motive: "Crime of Necessity",
     },
   ],
 };

@@ -17,6 +17,9 @@ function App() {
   // player data
   const playerData = loadPlayerData();
 
+  playerData.role = 1
+  savePlayerData(playerData);
+
   const [clues, setClues] = useState<Clue[]>(playerData.cluesFound)
   const [adminMode, setAdminMode] = useState<boolean>(false)
 
