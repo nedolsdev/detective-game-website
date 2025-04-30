@@ -1,28 +1,49 @@
+import { useState } from 'react'
 import './App.css'
 import CameraScannerWrapper from './CameraScannerWrapper'
 import Card from './Card'
 import Carousel from './Carousel'
-import { GAME_DATA } from './data'
 import Game from './Game'
-
-
+import getClueFromCode from './helpers'
+import { loadPlayerData, savePlayerData } from './storage'
+import { Clue } from './types'
 
 function App() {
-  
+
+  // player data
+  const playerData = loadPlayerData();
+
+  const [clues, setClues] = useState<Clue[]>(playerData.cluesFound)
+
+  function addClue(clue_code: string) {
+    const clue = getClueFromCode(clue_code)
+    if (clue) {
+      alert(`Clue found: ${clue.name}`)
+      setClues(prev => [...prev, clue])
+
+      // update player data
+      playerData.cluesFound.push(clue)
+
+      // save player data
+      savePlayerData(playerData)
+    } else {
+      console.error("Clue not found")
+    }
+  }
+
   return (
     <Game title="Scan Your Code">
-
-      <CameraScannerWrapper onScanComplete={(code) => alert(code)} />
+      <CameraScannerWrapper onScanComplete={addClue} />
 
       <Carousel>
-        <Card clue={GAME_DATA.clues[0]}>
-        </Card> 
-        <Card clue={GAME_DATA.clues[1]}>
-        </Card>
-        <Card clue={GAME_DATA.clues[25]}>
-        </Card>  
+        {clues.map((clue) => (
+          <Card
+            key={clue.id}
+            clue={clue}
+            backgroundColor="lightblue"
+          />
+        ))}
       </Carousel>
-
     </Game>
   )
 }
