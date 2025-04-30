@@ -23,7 +23,6 @@ function App() {
         </Card>  
       </Carousel>
 
-
     </Game>
   )
 }

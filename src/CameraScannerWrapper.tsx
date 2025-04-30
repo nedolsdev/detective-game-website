@@ -23,39 +23,7 @@ function CameraScannerWrapper({ onScanComplete }: CameraScannerWrapperProps) {
         textAlign: 'center',
       }}
     >
-      {isScanning && (
-        <div
-          style={{
-            height: '300px',
-            border: '2px solid #ccc',
-            borderRadius: '8px',
-            marginBottom: '1rem',
-            overflow: 'hidden',
-            backgroundColor: '#f8f9fa',
-          }}
-        >
-          {isScanning ? (
-            <div style={{ width: '100%', height: '100%' }}>
-              <QRCodeScanner mode="camera" onScanComplete={completed_scan} />
-            </div>
-          ) : (
-            <div
-              style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#aaa',
-              }}
-            >
-              Camera preview will appear here
-            </div>
-          )}
-        </div>
-      )}
-
-      {!isScanning ? (
+       {!isScanning ? (
         <button
           onClick={() => setIsScanning(true)}
           style={{
@@ -86,6 +54,40 @@ function CameraScannerWrapper({ onScanComplete }: CameraScannerWrapperProps) {
           Cancel
         </button>
       )}
+
+      {isScanning && (
+        <div
+          style={{
+            height: '300px',
+            border: '2px solid #ccc',
+            borderRadius: '8px',
+            marginTop: '2rem',
+            overflow: 'hidden',
+            backgroundColor: '#f8f9fa',
+          }}
+        >
+          {isScanning ? (
+            <div style={{ width: '100%', height: '100%' }}>
+              <QRCodeScanner mode="camera" onScanComplete={completed_scan} />
+            </div>
+          ) : (
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#aaa',
+              }}
+            >
+              Camera preview will appear here
+            </div>
+          )}
+        </div>
+      )}
+
+     
     </div>
   );
 }
