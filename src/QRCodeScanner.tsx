@@ -3,9 +3,10 @@ import React, { useEffect, useRef, useState } from 'react';
 
 type QRCodeScannerProps = {
   mode: 'camera' | 'file';
+  onScanComplete?: (result: string) => void;
 };
 
-function QRCodeScanner({ mode }: QRCodeScannerProps) {
+function QRCodeScanner({ mode, onScanComplete }: QRCodeScannerProps) {
   const scannerRef = useRef<HTMLDivElement | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [qrFile, setQrFile] = useState<File | null>(null);
@@ -15,25 +16,23 @@ function QRCodeScanner({ mode }: QRCodeScannerProps) {
     if (mode !== 'camera' || !scannerRef.current || qrInstance) return;
 
     const startScanner = () => {
-      // Check if the DOM element exists before initializing
-      if (!scannerRef.current) {
-        console.error('Scanner element not found.');
-        return;
-      }
+      if (!scannerRef.current) return;
 
       const html5QrCode = new Html5Qrcode(scannerRef.current.id);
       setQrInstance(html5QrCode);
 
       html5QrCode
         .start(
-          { facingMode: 'environment' }, 
-          { fps: 10, qrbox: { width: 1000, height: 1000 } },
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: { width: 250, height: 250 } },
           (decodedText: string) => {
-            alert(`Scanned QR Code: ${decodedText}`);
+            if (onScanComplete) {
+              onScanComplete(decodedText);
+            }
             html5QrCode.stop().then(() => console.log('Camera stopped'));
           },
           (error) => {
-            console.log('QR code scan error:', error);
+            // console.log('QR code scan error:', error);
           }
         )
         .catch((err) => {
@@ -50,7 +49,7 @@ function QRCodeScanner({ mode }: QRCodeScannerProps) {
         qrInstance.stop().then(() => qrInstance.clear());
       }
     };
-  }, [mode, qrInstance]);
+  }, [mode, qrInstance, onScanComplete]);
 
   useEffect(() => {
     if (mode !== 'file' || !qrFile) return;
@@ -60,7 +59,9 @@ function QRCodeScanner({ mode }: QRCodeScannerProps) {
     html5QrCode
       .scanFile(qrFile, true)
       .then((decodedText) => {
-        alert(`Detected from image: ${decodedText}`);
+        if (onScanComplete) {
+          onScanComplete(decodedText);
+        }
       })
       .catch(() => {
         alert('No QR code detected.');
@@ -69,7 +70,7 @@ function QRCodeScanner({ mode }: QRCodeScannerProps) {
     return () => {
       html5QrCode.clear();
     };
-  }, [qrFile, mode]);
+  }, [qrFile, mode, onScanComplete]);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const file = e.target.files?.[0];
@@ -80,13 +81,12 @@ function QRCodeScanner({ mode }: QRCodeScannerProps) {
   }
 
   return (
-    <div>
-      <h2>QR Code Scanner ({mode})</h2>
+    <div style={{ width: '100%', height: '100%' }}>
       {mode === 'camera' && (
         <div
           id="qr-reader"
           ref={scannerRef}
-          style={{ width: '100%', height: '500px' }}
+          style={{ width: '100%', height: '100%' }}
         />
       )}
       {mode === 'file' && (
