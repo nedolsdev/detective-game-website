@@ -17,6 +17,13 @@ function App() {
 
   function addClue(clue_code: string) {
     const clue = getClueFromCode(clue_code)
+
+    // check if clue already exists
+    if (clues.some(existingClue => existingClue.id === clue.id)) {
+      alert("Clue already found")
+      return
+    }
+
     if (clue) {
       alert(`Clue found: ${clue.name}`)
       setClues(prev => [...prev, clue])
