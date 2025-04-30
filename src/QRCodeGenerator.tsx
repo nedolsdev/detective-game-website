@@ -5,8 +5,9 @@ import { useRef } from 'react';
 
 const names: string[] = [];
 
-const NUMBER_OF_CLUES = 36;
+const NUMBER_OF_CLUES = 24;
 const NUMBER_OF_SUSPECTS = 12;
+const NUMBER_OF_ROLE_CARDS = 3;
 
 for (let i=1; i <= NUMBER_OF_CLUES; i++) {
   names.push(`clue-${i}`);
@@ -14,6 +15,10 @@ for (let i=1; i <= NUMBER_OF_CLUES; i++) {
 
 for (let i=1; i <= NUMBER_OF_SUSPECTS; i++) {
   names.push(`suspect-${i}`);
+}
+
+for (let i=1; i <= NUMBER_OF_ROLE_CARDS; i++) {
+  names.push(`role-${i}`)
 }
 
 function QRCodeGenerator() {
@@ -76,9 +81,9 @@ function QRCodeGenerator() {
         <div key={name} style={{ marginBottom: '40px' }}>
           <div
             ref={(el) => (qrRefs.current[index] = el)}
-            style={{ padding: '20px', border: '1px solid #ccc', display: 'inline-block' }}
+            style={{ display: 'inline-block' }}
           >
-            <QRCodeSVG value={name} size={256} includeMargin={true} />
+            <QRCodeSVG value={name} size={256} marginSize={2} />
           </div>
           <div style={{ textAlign: 'center', marginTop: '10px' }}>{name}</div>
         </div>
