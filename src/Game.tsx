@@ -1,11 +1,10 @@
 import React from 'react';
 
 type GameProps = {
-  title?: string;
   children: React.ReactNode;
 };
 
-function Game({ title, children }: GameProps) {
+function Game({ children }: GameProps) {
   return (
     <div
       style={{
@@ -20,17 +19,21 @@ function Game({ title, children }: GameProps) {
         boxSizing: 'border-box',
       }}
     >
-      {title && (
+      
         <h1
           style={{
             marginBottom: '1rem',
             fontSize: '1.75rem',
             textAlign: 'center',
+            color: '#ccc',
+            fontFamily: 'Arial, sans-serif',
           }}
         >
-          {title}
+          Prose<em style={
+            { fontSize: '1.75rem', fontWeight: 'bold', color: 'black' }
+          }>QR</em>ution
         </h1>
-      )}
+
       <div style={{ width: '100%', maxWidth: '500px' }}>{children}</div>
     </div>
   );

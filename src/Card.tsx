@@ -13,7 +13,7 @@ type CardProps = {
 };
 
 const Card: React.FC<CardProps> = ({
-  backgroundColor = 'lightblue',
+  backgroundColor = '#d8d9a0',
   borderRadius = '8px',
   padding = '16px',
   width = '200px',
@@ -39,10 +39,14 @@ const Card: React.FC<CardProps> = ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        color: "black",
+        fontFamily: 'Arial, sans-serif',
       }}
     >
       <div>
-        <h3 style={{ margin: '0 0 4px 0' }}>{clue.name}</h3>
+        <h3 style={{ margin: '0 0 4px 0' }}><em style={
+          { fontSize: '22px', fontWeight: 'bold', color: 'black' }
+        }>{clue.name}</em></h3>
         <p style={{ margin: '0 0 8px 0', fontStyle: 'italic' }}>{clue.clueType.toUpperCase()}</p>
         {filteredClue.map((entry, index) => (
           <div key={index} style={{ marginBottom: '6px' }}>

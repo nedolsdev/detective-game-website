@@ -1,12 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import CameraScannerWrapper from './CameraScannerWrapper'
 import Card from './Card'
 import Carousel from './Carousel'
+import { GAME_DATA } from './data'
 import Game from './Game'
 import { getClueFromCode, getRoleFromCode } from './helpers'
+import ProsecutionSelector from './ProsecutionSelector'
 import { loadPlayerData, savePlayerData } from './storage'
 import { Clue } from './types'
+
+
 
 function App() {
 
@@ -14,7 +18,8 @@ function App() {
   const playerData = loadPlayerData();
 
   const [clues, setClues] = useState<Clue[]>(playerData.cluesFound)
-  
+  const [adminMode, setAdminMode] = useState<boolean>(false)
+
   // state for scanText
   const [scanText, setScanText] = useState<string>(playerData.role ? "Scan a clue QR code" : "Scan your role QR code")
 
@@ -72,23 +77,38 @@ function App() {
     }
   }
 
-  return (
-    <Game title="ProseQRution">
-      <CameraScannerWrapper onScanComplete={handleScan} scanText={
-        scanText
-      }  />
+  useEffect(() => {
+    
+    window.setAdminMode = setAdminMode;
+  }, []);
 
-      <Carousel>
-        {clues.map((clue) => (
-          <Card
-            key={clue.id}
-            clue={clue}
-            backgroundColor="lightblue"
-            role={playerData.role}
-          />
-        ))}
-      </Carousel>
-    </Game>
+  return (
+
+    (adminMode) ? (
+      <div style={{ padding: '20px' }}>
+        <h2>Hello Admin</h2>
+      </div>
+    ) : (
+      <Game>
+
+        {/* Prosecution */}
+        <ProsecutionSelector gameData={GAME_DATA} playerData={playerData}/>
+
+        <CameraScannerWrapper onScanComplete={handleScan} scanText={
+          scanText
+        }  />
+
+        <Carousel>
+          {clues.map((clue) => (
+            <Card
+              key={clue.id}
+              clue={clue}
+              role={playerData.role}
+            />
+          ))}
+        </Carousel>
+      </Game>
+    )
   )
 }
 
