@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import AdminPage from './AdminPage'
 import './App.css'
 import CameraScannerWrapper from './CameraScannerWrapper'
 import Card from './Card'
@@ -112,9 +113,7 @@ function App() {
   return (
 
     (adminMode) ? (
-      <div style={{ padding: '20px' }}>
-        <h2>Hello Admin</h2>
-      </div>
+      <AdminPage />
     ) : (
       <Game>
 
