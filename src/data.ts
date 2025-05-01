@@ -545,7 +545,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "Kiana Lawrence",
-      id: 1,
+      id: 25,
       info: [
         {
           text: "The cleaner who found the body, she works for the company full-time",
@@ -565,7 +565,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "Kaine Jordans",
-      id: 2,
+      id: 26,
       info: [
         {
           text: "Boyfriend of the victim, he's a sport star and baseball pitcher",
@@ -589,7 +589,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "Maria Hargraves",
-      id: 3,
+      id: 27,
       info: [
         {
           text: "Bestfriend of victim, has a boyfriend, studying bio-med at university",
@@ -613,7 +613,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "Trenton Bryce",
-      id: 4,
+      id: 28,
       info: [
         {
           text: "Maria's Boyfriend, closeted gay, plays on the baseball team with Kaine.",
@@ -637,7 +637,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "Tayla Hill",
-      id: 5,
+      id: 29,
       info: [
         {
           text: "Bar manager on the rooftop bar, saw the victim and group of people she was with",
@@ -661,7 +661,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "James Cooper",
-      id: 6,
+      id: 30,
       info: [
         {
           text: "A professor at the University, a tenured professor for the Science Department",
@@ -685,7 +685,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "Abigail King",
-      id: 7,
+      id: 31,
       info: [
         {
           text: "Victim's Mother, very standoffish and acts like a high class woman",
@@ -709,7 +709,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "George Miller",
-      id: 8,
+      id: 32,
       info: [
         {
           text: "Victim's Father, very cynic and condescending",
@@ -733,7 +733,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "Penelope Lansdown",
-      id: 9,
+      id: 33,
       info: [
         {
           text: "Witness who was at the restaurant for an anniversary dinner",
@@ -753,7 +753,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "John Lansdown",
-      id: 10,
+      id: 34,
       info: [
         {
           text: "Witness who was at the restaurant for an anniversary dinner",
@@ -777,7 +777,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "Veronica Martinez",
-      id: 11,
+      id: 35,
       info: [
         {
           text: 'Was out at the rooftop bar "drinking her feelings"',
@@ -797,7 +797,7 @@ export const GAME_DATA: GameData = {
     {
       clueType: "suspect",
       name: "Patrick Hall",
-      id: 12,
+      id: 36,
       info: [
         {
           text: "Restaurant Manager at the hotel",
@@ -822,29 +822,29 @@ export const GAME_DATA: GameData = {
   causes: [
     {
       id: 1,
-      cause: "Blunt Force Trauma",
+      cause: "Pill Bottle",
     },
     {
       id: 2,
-      cause: "Sharp Force Trauam",
+      cause: "Unlabelled Bottle",
     },
     {
       id: 3,
-      cause: "Poisoning",
+      cause: "Meat Mallet",
     },
     {
       id: 4,
-      cause: "Burn",
+      cause: "Baseball Bat",
     },
     {
       id: 5,
-      cause: "Aphyxiation",
+      cause: "Broken Glass",
     },
   ],
   crime: {
     killer: 3,
     motive: 1,
-    method: 1,
+    method: 2,
   },
   motives: [
     {
@@ -858,6 +858,10 @@ export const GAME_DATA: GameData = {
     {
       id: 3,
       motive: "Crime of Coincidence",
+    },
+    {
+      id: 4,
+      motive: "Crime of Necessity",
     },
   ],
 };

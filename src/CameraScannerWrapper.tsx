@@ -3,9 +3,10 @@ import QRCodeScanner from "./QRCodeScanner";
 
 type CameraScannerWrapperProps = {
   onScanComplete: (result: string) => void;
+  scanText?: string;
 };
 
-function CameraScannerWrapper({ onScanComplete }: CameraScannerWrapperProps) {
+function CameraScannerWrapper({ onScanComplete, scanText }: CameraScannerWrapperProps) {
   const [isScanning, setIsScanning] = useState(false);
 
   const completed_scan = (result: string) => {
@@ -15,50 +16,20 @@ function CameraScannerWrapper({ onScanComplete }: CameraScannerWrapperProps) {
     setIsScanning(false);
   };
 
+  const handleCancel = () => {
+    setIsScanning(false);
+    alert("Due to a bug with the QR code scanner, you need to refresh the page or new scans will not work. Sorry about this.");
+  };
+
   return (
     <div
       style={{
         maxWidth: '400px',
         margin: '0 auto',
-        padding: '1rem',
         textAlign: 'center',
       }}
     >
-      <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
-        Scan a QR Code
-      </h2>
-
-      <div
-        style={{
-          height: '300px',
-          border: '2px solid #ccc',
-          borderRadius: '8px',
-          marginBottom: '1rem',
-          overflow: 'hidden',
-          backgroundColor: '#f8f9fa',
-        }}
-      >
-        {isScanning ? (
-          <div style={{ width: '100%', height: '100%' }}>
-            <QRCodeScanner mode="camera" onScanComplete={completed_scan} />
-          </div>
-        ) : (
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#aaa',
-            }}
-          >
-            Camera preview will appear here
-          </div>
-        )}
-      </div>
-
-      {!isScanning ? (
+       {!isScanning ? (
         <button
           onClick={() => setIsScanning(true)}
           style={{
@@ -71,11 +42,11 @@ function CameraScannerWrapper({ onScanComplete }: CameraScannerWrapperProps) {
             cursor: 'pointer',
           }}
         >
-          Start Scanning
+          {scanText || 'Start Scanning'}
         </button>
       ) : (
         <button
-          onClick={() => setIsScanning(false)}
+          onClick={handleCancel}
           style={{
             padding: '0.75rem 1.25rem',
             fontSize: '1rem',
@@ -89,6 +60,40 @@ function CameraScannerWrapper({ onScanComplete }: CameraScannerWrapperProps) {
           Cancel
         </button>
       )}
+
+      {isScanning && (
+        <div
+          style={{
+            height: '300px',
+            border: '2px solid #ccc',
+            borderRadius: '8px',
+            marginTop: '2rem',
+            overflow: 'hidden',
+            backgroundColor: '#f8f9fa',
+          }}
+        >
+          {isScanning ? (
+            <div style={{ width: '100%', height: '100%' }}>
+              <QRCodeScanner mode="camera" onScanComplete={completed_scan} />
+            </div>
+          ) : (
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#aaa',
+              }}
+            >
+              Camera preview will appear here
+            </div>
+          )}
+        </div>
+      )}
+
+     
     </div>
   );
 }
