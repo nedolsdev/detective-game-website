@@ -10,15 +10,57 @@ type Props = {
 };
 
 function Guess({ guess, playerData, gameData }: Props): JSX.Element {
-  return (
+  
+    const role = playerData.role;
+  
+    function getGuessTitle(): string {
+        // if role 1 = suspect, role 2 = method, role 3 = motive
+        if (role === 1) {
+            return 'Chosen Suspect';
+        } else if (role === 2) {
+            return 'Chosen Method';
+        } else if (role === 3) {
+            return 'Chosen Motive';
+        }
+        return 'Unknown Role';
+    }
+
+    function getGuessText(guess: number): string {
+
+        // role 1 = suspect, role 2 = method, role 3 = motive
+
+        // role 1 get suspect name from clues
+        if (role === 1) {
+            const suspect = gameData.clues.find((clue) => clue.id === guess);
+            return suspect ? suspect.name : 'Unknown Suspect';
+        }
+
+        // role 2 get method name from causes
+        if (role === 2) {
+            const method = gameData.causes.find((cause) => cause.id === guess);
+            return method ? method.cause : 'Unknown Method';
+        }
+
+        // role 3 get motive name from motives
+        if (role === 3) {
+            const motive = gameData.motives.find((motive) => motive.id === guess);
+            return motive ? motive.motive : 'Unknown Motive';
+        }
+
+        return 'Unknown Guess';
+    }
+  
+  
+    return (
     <div style={guessContainerStyle}>
       <div style={guessBoxStyle}>
-        <h2 style={guessTitleStyle}>Your Guess</h2>
-        <p style={guessTextStyle}>{guess ?? 'No guess yet'}</p>
+        <h2 style={guessTitleStyle}>{getGuessTitle()}</h2>
+        <p style={guessTextStyle}>{getGuessText(guess)}</p>
       </div>
     </div>
   );
 }
+
 
 const guessContainerStyle: React.CSSProperties = {
   display: 'flex',

@@ -18,8 +18,6 @@ function App() {
   // player data
   const playerData = loadPlayerData();
 
-  playerData.role = 1;
-  savePlayerData(playerData);
 
   const [clues, setClues] = useState<Clue[]>(playerData.cluesFound)
   const [adminMode, setAdminMode] = useState<boolean>(false)
@@ -61,7 +59,6 @@ function App() {
 
   function makeGuess(guess: number) {
     if (playerData.role) {
-      alert(`You have selected ${guess}.`)
       setGuess(guess)
       playerData.guess = guess
       savePlayerData(playerData)
@@ -96,7 +93,7 @@ function App() {
       // update ready to guess
       
       // if we have 4 suspects and at least 12 clues total then we are ready to guess
-      if (clues.length >= 2 && clues.filter(clue => clue.clueType === "suspect").length >= 1) {
+      if (clues.length >= 12 && clues.filter(clue => clue.clueType === "suspect").length >= 4) {
         setReadyToGuess(true)
         playerData.readyToGuess = true
         savePlayerData(playerData)
