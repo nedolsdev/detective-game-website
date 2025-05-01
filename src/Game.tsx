@@ -23,14 +23,14 @@ function Game({ children }: GameProps) {
         <h1
           style={{
             marginBottom: '1rem',
-            fontSize: '1.75rem',
+            fontSize: '2.75rem',
             textAlign: 'center',
             color: '#ccc',
             fontFamily: 'Arial, sans-serif',
           }}
         >
           Prose<em style={
-            { fontSize: '1.75rem', fontWeight: 'bold', color: 'black' }
+            { fontSize: '2.75rem', fontWeight: 'bold', color: 'black' }
           }>QR</em>ution
         </h1>
 

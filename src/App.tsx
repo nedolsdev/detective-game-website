@@ -17,11 +17,14 @@ function App() {
   // player data
   const playerData = loadPlayerData();
 
-  playerData.role = 1
+  playerData.role = 1;
   savePlayerData(playerData);
 
   const [clues, setClues] = useState<Clue[]>(playerData.cluesFound)
   const [adminMode, setAdminMode] = useState<boolean>(false)
+
+  // ready to guess
+  const [readyToGuess, setReadyToGuess] = useState<boolean>(playerData.readyToGuess)
 
   // state for scanText
   const [scanText, setScanText] = useState<string>(playerData.role ? "Scan a clue QR code" : "Scan your role QR code")
@@ -75,6 +78,16 @@ function App() {
 
       // save player data
       savePlayerData(playerData)
+
+      // update ready to guess
+      
+      // if we have 4 suspects and at least 12 clues total then we are ready to guess
+      if (clues.length >= 12 && clues.filter(clue => clue.clueType === "suspect").length >= 4) {
+        setReadyToGuess(true)
+        playerData.readyToGuess = true
+        savePlayerData(playerData)
+      }
+
     } else {
       alert("Clue not found. Please scan a valid clue QR code.")
     }
@@ -94,8 +107,20 @@ function App() {
     ) : (
       <Game>
 
-        {/* Prosecution */}
-        <ProsecutionSelector gameData={GAME_DATA} playerData={playerData}/>
+        {/* role */}
+        {playerData.role && (
+          <div className="role">
+            <h2
+              style={{
+                fontSize: '1.5rem',
+                color: 'white',
+                marginBottom: '20px',
+                textAlign: 'center',
+                fontFamily: 'Arial',
+              }}
+            >Your Role: {GAME_DATA.roles.find(role => role.id === playerData.role)?.displayName}</h2>
+          </div>
+        )}
 
         <CameraScannerWrapper onScanComplete={handleScan} scanText={
           scanText
@@ -110,6 +135,13 @@ function App() {
             />
           ))}
         </Carousel>
+
+        {/* check if role */}
+
+        {playerData.role && readyToGuess && (
+          <ProsecutionSelector gameData={GAME_DATA} playerData={playerData}/>
+        )}
+
       </Game>
     )
   )

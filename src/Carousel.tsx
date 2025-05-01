@@ -74,7 +74,7 @@ const carouselContainerStyle = (width: string, height: string): React.CSSPropert
 const carouselTrackStyle = (index: number): React.CSSProperties => ({
   display: 'flex',
   transform: `translateX(-${index * 100}%)`,
-  transition: 'transform 0.5s ease-in-out',
+  transition: 'transform 0.35s ease-in-out',
   width: '100%',
   alignItems: 'center',
 });
