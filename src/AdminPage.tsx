@@ -1,11 +1,33 @@
-import { JSX, useState } from 'react';
+import { JSX, useEffect, useRef, useState } from 'react';
 import QRCodeGenerator from './QRCodeGenerator';
 import RevealPage from './RevealPage';
 
 function AdminPage(): JSX.Element {
   const [revealPage, setRevealPage] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const SPY_MUSIC = "./src/assets/spy_music.mp3";
+
+  useEffect(() => {
+    const audio = new Audio(SPY_MUSIC);
+    audio.loop = true;
+    audio.volume = 0.6; 
+    audio.play().catch(err => {
+      console.error("Autoplay failed. User interaction may be required.", err);
+    });
+    audioRef.current = audio;
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
 
   function handleButtonClick(): void {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
     setRevealPage(true);
   }
 
@@ -51,7 +73,6 @@ function AdminPage(): JSX.Element {
           </em>
           ution
         </h1>
-
 
         <div
           style={{
