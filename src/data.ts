@@ -436,7 +436,7 @@ export const GAME_DATA: GameData = {
       id: 20,
       info: [
         {
-          text: "Victims report cards are pinned to a calk board",
+          text: "Victims report cards are pinned to a cork board",
           foundBy: [1, 3, 2],
         },
         {

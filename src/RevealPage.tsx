@@ -119,7 +119,7 @@ function RevealPage(): JSX.Element {
             }}
           >
             <p style={revealLineStyle}>
-              <span style={labelStyle}>Suspect:</span> {crime.suspect}
+              <span style={labelStyle}>Killer:</span> {crime.suspect}
             </p>
             <p style={revealLineStyle}>
               <span style={labelStyle}>Method:</span> {crime.method}
