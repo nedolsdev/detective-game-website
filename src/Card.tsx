@@ -9,7 +9,7 @@ type CardProps = {
   height?: string;
   boxShadow?: string;
   clue: Clue;
-  role: int;
+  role: number;
 };
 
 const Card: React.FC<CardProps> = ({
