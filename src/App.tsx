@@ -5,6 +5,7 @@ import Card from './Card'
 import Carousel from './Carousel'
 import { GAME_DATA } from './data'
 import Game from './Game'
+import Guess from './Guess'
 import { getClueFromCode, getRoleFromCode } from './helpers'
 import ProsecutionSelector from './ProsecutionSelector'
 import { loadPlayerData, savePlayerData } from './storage'
@@ -25,6 +26,9 @@ function App() {
 
   // ready to guess
   const [readyToGuess, setReadyToGuess] = useState<boolean>(playerData.readyToGuess)
+
+  // made guess
+  const [guess, setGuess] = useState<number | null>(playerData.guess)
 
   // state for scanText
   const [scanText, setScanText] = useState<string>(playerData.role ? "Scan a clue QR code" : "Scan your role QR code")
@@ -55,6 +59,16 @@ function App() {
   }
 
 
+  function makeGuess(guess: number) {
+    if (playerData.role) {
+      alert(`You have selected ${guess}.`)
+      setGuess(guess)
+      playerData.guess = guess
+      savePlayerData(playerData)
+    }
+  }
+
+
   function addClue(clue_code: string) {
     const clue = getClueFromCode(clue_code)
 
@@ -82,7 +96,7 @@ function App() {
       // update ready to guess
       
       // if we have 4 suspects and at least 12 clues total then we are ready to guess
-      if (clues.length >= 12 && clues.filter(clue => clue.clueType === "suspect").length >= 4) {
+      if (clues.length >= 2 && clues.filter(clue => clue.clueType === "suspect").length >= 1) {
         setReadyToGuess(true)
         playerData.readyToGuess = true
         savePlayerData(playerData)
@@ -122,26 +136,32 @@ function App() {
           </div>
         )}
 
-        <CameraScannerWrapper onScanComplete={handleScan} scanText={
-          scanText
-        }  />
+        {/* guess */}
+        {playerData.guess ? (
+         <Guess guess={guess} playerData={playerData} gameData={GAME_DATA} />
+        ) :(
+          <>
+            <CameraScannerWrapper onScanComplete={handleScan} scanText={
+              scanText
+            }  />
 
-        <Carousel>
-          {clues.map((clue) => (
-            <Card
-              key={clue.id}
-              clue={clue}
-              role={playerData.role}
-            />
-          ))}
-        </Carousel>
+            <Carousel>
+              {clues.map((clue) => (
+                <Card
+                  key={clue.id}
+                  clue={clue}
+                  role={playerData.role}
+                />
+              ))}
+            </Carousel>
 
-        {/* check if role */}
+            {/* check if role */}
 
-        {playerData.role && readyToGuess && (
-          <ProsecutionSelector gameData={GAME_DATA} playerData={playerData}/>
+            {playerData.role && readyToGuess && (
+              <ProsecutionSelector gameData={GAME_DATA} playerData={playerData} onSubmit={makeGuess}/>
+            )}
+          </>
         )}
-
       </Game>
     )
   )

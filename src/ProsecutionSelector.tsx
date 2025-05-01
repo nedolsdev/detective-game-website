@@ -9,10 +9,11 @@ import { PlayerData } from './playerData';
 type Props = {
   gameData: GameData;
   playerData: PlayerData;
+  onSubmit: (guess: number) => void;
 };
 
 function ProsecutionSelector(props: Props): JSX.Element {
-  const { gameData, playerData } = props;
+  const { gameData, playerData, onSubmit } = props;
   const roleId = playerData.role;
 
   const [selectedGuess, setSelectedGuess] = useState<number | null>(null);
@@ -27,7 +28,7 @@ function ProsecutionSelector(props: Props): JSX.Element {
         "You can only do this once. Make sure this is your final choice.\n\nAre you sure you want to proceed?";
       const confirmed = window.confirm(confirmMessage);
       if (confirmed) {
-        alert(`You have selected ${selectedGuess}.`);
+        onSubmit(selectedGuess);
       }
     }
   }
